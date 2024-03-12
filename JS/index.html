@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>New York Times Wordle</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        margin-top: 50px;
+        background-color: #f3f3f3;
+      }
+
+      #wordle-container {
+        display: inline-block;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+      }
+
+      #wordle-input {
+        width: 150px;
+        padding: 5px;
+        margin-right: 10px;
+        text-transform: uppercase;
+      }
+
+      #wordle-button {
+        padding: 5px 10px;
+        cursor: pointer;
+      }
+
+      #wordle-output {
+        margin-top: 20px;
+        font-size: 20px;
+      }
+
+      #result {
+        margin-top: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="wordle-container">
+      <h1>New York Times Wordle</h1>
+      <input type="text" id="wordle-input" maxlength="5" />
+      <button id="wordle-button" onclick="checkWord()">Check</button>
+      <div id="wordle-output"></div>
+      <div id="result"></div>
+    </div>
+
+    <script>
+      let targetWord = generateWord();
+
+      function generateWord() {
+        const words = [
+          "HELLO",
+          "WORLD",
+          "APPLE",
+          "BANANA",
+          "LEMON",
+          "ORANGE",
+          "GRAPE",
+          "MANGO",
+        ];
+        return words[Math.floor(Math.random() * words.length)];
+      }
+
+      function checkWord() {
+        const guess = document
+          .getElementById("wordle-input")
+          .value.toUpperCase();
+        if (!isValidInput(guess)) {
+          document.getElementById("wordle-output").innerHTML =
+            "Please enter a 5-letter word with no repeated letters.";
+          return;
+        }
+
+        let result = "";
+        for (let i = 0; i < 5; i++) {
+          if (guess[i] === targetWord[i]) {
+            result += "●";
+          } else if (targetWord.includes(guess[i])) {
+            result += "○";
+          } else {
+            result += "-";
+          }
+        }
+
+        document.getElementById("wordle-output").innerHTML = result;
+        if (result === "●●●●●") {
+          document.getElementById("result").innerHTML =
+            "Congratulations! You guessed the word: " + targetWord;
+        }
+      }
+
+      function isValidInput(word) {
+        if (word.length !== 5) return false;
+        const uniqueLetters = new Set(word);
+        return uniqueLetters.size === 5;
+      }
+    </script>
+  </body>
+</html>
